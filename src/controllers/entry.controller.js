@@ -10,5 +10,23 @@ exports.addEntry = addEntry;
  * @returns {object} HTTP response
  */
 function addEntry(req, res) {
-  console.log('Adding Entry!');
+  console.log(chalk.blue('/entries/'));
+  console.log(chalk.black.bgBlue('Adding Entry...'));
+  
+  const entry = new Entry(req.body.entry);
+  console.log(entry);
+
+  try {
+    entry.save();
+    res.status(200).send({
+      success: true,
+      body: entry
+    });
+  } catch (e) {
+    console.log(chalk.red(e));
+    res.status(500).send({
+      success: false,
+      message: 'Failed to save entry'
+    })
+  }
 }

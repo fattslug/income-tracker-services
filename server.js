@@ -1,5 +1,7 @@
+require('dotenv').config();
+
 const express = require('express');
-const port = 3001;
+const port = process.env.PORT || 3001;
 const bodyParser = require('body-parser');
 const http = require('http');
 const https = require('https');
@@ -9,7 +11,7 @@ const chalk = require('chalk');
 const app = express();
 const db = require('./src/db');
 
-const allowedOrigins = ['http://localhost:3000'];
+const allowedOrigins = process.env.ALLOWED_ORIGINS;
 const corsOptions = {
   origin: '',
   credentials: true,
@@ -21,6 +23,7 @@ app.use((req, res, next) => {
     corsOptions.origin = req.headers.origin;
     next();
   } else {
+    console.log(chalk.red('Access from invalid origin: '), req.headers.origin);
     res.sendStatus(403);
   }
 });
