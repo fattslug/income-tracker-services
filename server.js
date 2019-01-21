@@ -14,11 +14,11 @@ const db = require('./src/db');
 const allowedOrigins = process.env.ALLOWED_ORIGINS;
 const corsOptions = {
   origin: '',
-  credentials: true,
   optionsSuccessStatus: 200
 }
 
 app.use((req, res, next) => {
+  console.log('Origin:', req.headers.origin);
   if (allowedOrigins.indexOf(req.headers.origin) > -1) {
     corsOptions.origin = req.headers.origin;
     next();
