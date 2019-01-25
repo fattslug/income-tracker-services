@@ -11,5 +11,5 @@ exports.setToken = setToken;
  */
 function setToken(req, res) {
   var token = req.user.token;
-  res.redirect("http://localhost:3000?token=" + token);
+  res.redirect(`${process.env.APP_URL}?token=${token}`);
 }
