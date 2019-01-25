@@ -11,7 +11,7 @@ const chalk = require('chalk');
 const app = express();
 const db = require('./src/db');
 
-if (process.env.USE_CORS === true) {
+if (process.env.USE_CORS === 'true') {
   const allowedOrigins = process.env.ALLOWED_ORIGINS;
   const corsOptions = {
     origin: '',
