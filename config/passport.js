@@ -13,7 +13,7 @@ passport.use(
   new GoogleStrategy({
       clientID: '409743961271-ao8ca9smnl4tieb9k04hg0lli00fmmcd.apps.googleusercontent.com',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `${process.env.APP_URL}/auth/google/callback`
+      callbackURL: `${process.env.SERVER_URL}/auth/google/callback`
     },
     function (accessToken, refreshToken, profile, done) {
       var userData = {
