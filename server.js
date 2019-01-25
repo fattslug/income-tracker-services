@@ -6,13 +6,12 @@ const bodyParser = require('body-parser');
 const http = require('http');
 const https = require('https');
 const cors = require('cors');
-const passport = require('passport');
 const chalk = require('chalk');
 
 const app = express();
 const db = require('./src/db');
 
-if (process.env.USE_CORS) {
+if (process.env.USE_CORS === true) {
   const allowedOrigins = process.env.ALLOWED_ORIGINS;
   const corsOptions = {
     origin: '',

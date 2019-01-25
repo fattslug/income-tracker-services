@@ -4,6 +4,7 @@ const express = require('express');
 const router = new express.Router();
 const passport = require('passport');
 require('../../config/passport');
+
 const chalk = require('chalk');
 
 const AUTH = require('../controllers/auth.controller');

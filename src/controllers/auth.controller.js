@@ -1,23 +1,7 @@
 const User = require('../schema/user.schema');
-const passport = require('passport');
-require('../../config/passport');
-
 const chalk = require('chalk');
 
-exports.googleAuth = googleAuth;
 exports.setToken = setToken;
-
-/**
- * Authenticates using Google's OAuth Strategy
- */
-function googleAuth() {
-  console.log(chalk.blue('/auth/google'));
-  console.log(chalk.black.bgBlue('Logging in with Google...'));
-
-  console.log();
-
-  return passport.authenticate("google", { scope: ["profile", "email"] });
-}
 
 /**
  * Sets user token
