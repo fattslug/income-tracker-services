@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const http = require('http');
 const https = require('https');
 const cors = require('cors');
+const passport = require('passport');
 const chalk = require('chalk');
 
 const app = express();
@@ -40,6 +41,9 @@ app.use(bodyParser.urlencoded({
 // Routes
 const entryRoutes = require('./src/routes/entry.routes');
 app.use('/entries', entryRoutes);
+
+const authRoutes = require('./src/routes/auth.routes');
+app.use('/auth', authRoutes);
 
 let server = http.createServer(app);
 server.listen(port);
