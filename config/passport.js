@@ -21,7 +21,7 @@ passport.use(
         name: profile.displayName,
         token: accessToken
       };
-      console.log(userData);
+      console.log('User logged in:', userData);
       done(null, userData);
     }
   )
