@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+
 const chalk = require('chalk');
 
 mongoose.connect(process.env.MONGO_URL, (err) => {
@@ -9,3 +10,5 @@ mongoose.connect(process.env.MONGO_URL, (err) => {
     console.log(chalk.green('Successfully connected to MongoDB'));
   }
 });
+
+module.exports = mongoose;

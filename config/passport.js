@@ -1,5 +1,7 @@
+const User = require('../src/schema/user.schema');
 const passport = require('passport');
-const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const BearerStrategy = require('passport-http-bearer');
 
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -17,12 +19,24 @@ passport.use(
     },
     function (accessToken, refreshToken, profile, done) {
       var userData = {
-        email: profile.emails[0].value,
-        name: profile.displayName,
-        token: accessToken
+        UserID: profile.id,
+        Email: profile.emails[0].value,
+        Name: profile.displayName,
+        Token: accessToken
       };
-      console.log(userData);
       done(null, userData);
     }
   )
 );
+
+passport.use(new BearerStrategy(
+  function(token, done) {
+    console.log('BearerStrategy Running...');
+    User.findOne({ Token: token }, function (err, user) {
+      // console.log(user);
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
+      return done(null, user);
+    });
+  }
+));
