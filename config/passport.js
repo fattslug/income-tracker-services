@@ -31,7 +31,6 @@ passport.use(
 
 passport.use(new BearerStrategy(
   function(token, done) {
-    console.log('BearerStrategy Running...');
     User.findOne({ Token: token }, function (err, user) {
       // console.log(user);
       if (err) { return done(err); }
