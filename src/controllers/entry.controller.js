@@ -49,7 +49,16 @@ function getAllEntries(req, res) {
       console.log('Entries Found:', entries.length);
       res.status(200).send({
         success: true,
-        body: entries
+        body: {
+          totalAmount: entries.reduce((acc, curr) => {
+            console.log('----------');
+            console.log('Accumulator:', acc);
+            console.log('Current:', curr);
+            console.log(acc + curr.AmountPaid);
+            return acc + curr.AmountPaid;
+          }, 0),
+          entries: entries
+        }
       })
     })
   } catch (e) {
