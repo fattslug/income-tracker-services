@@ -51,13 +51,11 @@ function getAllEntries(req, res) {
         success: true,
         body: {
           totalAmount: entries.reduce((acc, curr) => {
-            console.log('----------');
-            console.log('Accumulator:', acc);
-            console.log('Current:', curr);
-            console.log(acc + curr.AmountPaid);
             return acc + curr.AmountPaid;
           }, 0),
-          entries: entries
+          entries: entries.sort((a, b) => {
+            return new Date(b.DateAdded) - new Date(a.DateAdded);
+          })
         }
       })
     })
