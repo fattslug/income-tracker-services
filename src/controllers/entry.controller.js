@@ -3,6 +3,8 @@ const chalk = require('chalk');
 
 exports.addEntry = addEntry;
 exports.getAllEntries = getAllEntries;
+exports.getEntryByID = getEntryByID;
+exports.updateEntryByID = updateEntryByID;
 
 /**
  * Adds a new entry to the database
@@ -40,13 +42,12 @@ function addEntry(req, res) {
  * @returns {object} HTTP response
  */
 function getAllEntries(req, res) {
-  console.log(chalk.blue('/entries/'));
+  console.log('GET', chalk.blue('/entries/'));
   console.log(chalk.black.bgBlue('Getting All Entries...'));
 
   try {
     Entry.find({}).exec((err, entries) => {
       if (err) { throw(err); }
-      console.log('Entries Found:', entries.length);
       res.status(200).send({
         success: true,
         body: {
@@ -64,6 +65,73 @@ function getAllEntries(req, res) {
     res.status(500).send({
       success: false,
       message: 'Failed to get all entries'
+    })
+  }
+}
+
+/**
+ * Get specific entry in database
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @returns {object} HTTP response
+ */
+function getEntryByID(req, res) {
+  const entryID = req.params.entryID;
+  console.log('GET', chalk.blue('/entries/'), entryID);
+  console.log(chalk.black.bgBlue('Getting All Entries...'));
+
+  try {
+    Entry.findById(entryID).exec((err, entry) => {
+      if (err) { throw(err); }
+      res.status(200).send({
+        success: true,
+        body: {
+          entry: entry
+        }
+      })
+    })
+  } catch (e) {
+    console.log(chalk.red(e));
+    res.status(500).send({
+      success: false,
+      message: 'Failed to get entry'
+    })
+  }
+}
+
+/**
+ * Update specific entry in database
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @returns {object} HTTP response
+ */
+function updateEntryByID(req, res) {
+  const entryID = req.params.entryID;
+  const updates = req.body.entry;
+  console.log('UPDATE', chalk.blue('/entries/'), entryID);
+  console.log(chalk.black.bgBlue('Updating Entry...'));
+
+  try {
+    Entry.findByIdAndUpdate(entryID, {
+      ClientName: updates.ClientName,
+      PaymentType: updates.PaymentType,
+      AmountPaid: updates.AmountPaid,
+      ServicesRendered: updates.ServicesRendered,
+      DateAdded: updates.DateAdded
+    }, { new: true }).exec((err, newEntry) => {
+      if (err) { throw(err); }
+      res.status(200).send({
+        success: true,
+        body: {
+          entry: newEntry
+        }
+      })
+    })
+  } catch (e) {
+    console.log(chalk.red(e));
+    res.status(500).send({
+      success: false,
+      message: 'Failed to update entry'
     })
   }
 }
