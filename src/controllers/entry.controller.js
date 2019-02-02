@@ -84,7 +84,7 @@ function getEntryByID(req, res) {
   try {
     Entry.findById(entryID).exec((err, entry) => {
       if (err) { throw(err); }
-      if (!entry.Deleted) {
+      if (entry.Deleted) {
         throw(true);
       }
       res.status(200).send({
