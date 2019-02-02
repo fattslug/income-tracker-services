@@ -19,7 +19,6 @@ function addEntry(req, res) {
 
   const entry = new Entry(req.body.entry);
   console.log(entry);
-  entry.DateAdded = new Date();
 
   try {
     entry.save();
