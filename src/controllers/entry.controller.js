@@ -3,6 +3,9 @@ const chalk = require('chalk');
 
 exports.addEntry = addEntry;
 exports.getAllEntries = getAllEntries;
+exports.getEntryByID = getEntryByID;
+exports.updateEntryByID = updateEntryByID;
+exports.deleteEntryByID = deleteEntryByID;
 
 /**
  * Adds a new entry to the database
@@ -16,7 +19,6 @@ function addEntry(req, res) {
 
   const entry = new Entry(req.body.entry);
   console.log(entry);
-  entry.DateAdded = new Date();
 
   try {
     entry.save();
@@ -40,16 +42,22 @@ function addEntry(req, res) {
  * @returns {object} HTTP response
  */
 function getAllEntries(req, res) {
-  console.log(chalk.blue('/entries/'));
+  console.log('GET', chalk.blue('/entries/'));
   console.log(chalk.black.bgBlue('Getting All Entries...'));
 
   try {
-    Entry.find({}).exec((err, entries) => {
+    Entry.find({ Deleted: { $ne: true } }).exec((err, entries) => {
       if (err) { throw(err); }
-      console.log('Entries Found:', entries.length);
       res.status(200).send({
         success: true,
-        body: entries
+        body: {
+          totalAmount: entries.reduce((acc, curr) => {
+            return acc + curr.AmountPaid;
+          }, 0),
+          entries: entries.sort((a, b) => {
+            return new Date(b.DateAdded) - new Date(a.DateAdded);
+          })
+        }
       })
     })
   } catch (e) {
@@ -57,6 +65,108 @@ function getAllEntries(req, res) {
     res.status(500).send({
       success: false,
       message: 'Failed to get all entries'
+    })
+  }
+}
+
+/**
+ * Get specific entry in database
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @returns {object} HTTP response
+ */
+function getEntryByID(req, res) {
+  const entryID = req.params.entryID;
+  console.log('GET', chalk.blue('/entries/'), entryID);
+  console.log(chalk.black.bgBlue('Getting All Entries...'));
+
+  try {
+    Entry.findById(entryID).exec((err, entry) => {
+      if (err) { throw(err); }
+      if (entry.Deleted) {
+        throw(true);
+      }
+      res.status(200).send({
+        success: true,
+        body: {
+          entry: entry
+        }
+      });
+    })
+  } catch (e) {
+    console.log(chalk.red(e));
+    res.status(500).send({
+      success: false,
+      message: 'Failed to get entry'
+    })
+  }
+}
+
+/**
+ * Update specific entry in database
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @returns {object} HTTP response
+ */
+function updateEntryByID(req, res) {
+  const entryID = req.params.entryID;
+  const updates = req.body.entry;
+  console.log('UPDATE', chalk.blue('/entries/'), entryID);
+  console.log(chalk.black.bgBlue('Updating Entry...'));
+
+  try {
+    Entry.findByIdAndUpdate(entryID, {
+      ClientName: updates.ClientName,
+      PaymentType: updates.PaymentType,
+      AmountPaid: updates.AmountPaid,
+      ServicesRendered: updates.ServicesRendered,
+      DateAdded: updates.DateAdded
+    }, { new: true }).exec((err, newEntry) => {
+      if (err) { throw(err); }
+      res.status(200).send({
+        success: true,
+        body: {
+          entry: newEntry
+        }
+      })
+    })
+  } catch (e) {
+    console.log(chalk.red(e));
+    res.status(500).send({
+      success: false,
+      message: 'Failed to update entry'
+    })
+  }
+}
+
+/**
+ * Delete entry in database
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @returns {object} HTTP response
+ */
+function deleteEntryByID(req, res) {
+  const entryID = req.params.entryID;
+  console.log('DELETE', chalk.blue('/entries/'), entryID);
+  console.log(chalk.black.bgBlue('Deleting Entry...'));
+
+  try {
+    Entry.findByIdAndUpdate(entryID, {
+      Deleted: true
+    }, { new: true }).exec((err, newEntry) => {
+      if (err) { throw(err); }
+      res.status(200).send({
+        success: true,
+        body: {
+          entry: newEntry
+        }
+      })
+    })
+  } catch (e) {
+    console.log(chalk.red(e));
+    res.status(500).send({
+      success: false,
+      message: 'Failed to update entry'
     })
   }
 }

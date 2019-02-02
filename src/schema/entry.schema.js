@@ -7,7 +7,8 @@ let entrySchema = new mongoose.Schema({
   PaymentType: String,
   AmountPaid: Number,
   ServicesRendered: Array,
-  DateAdded: Date
+  DateAdded: Date,
+  Deleted: Boolean
 }, {
   collection: 'entries'
 });
