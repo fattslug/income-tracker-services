@@ -10,6 +10,7 @@ const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const chalk = require('chalk');
+const fs = require('fs');
 
 const db = require('./src/db');
 const app = express();
@@ -69,8 +70,17 @@ const authRoutes = require('./src/routes/auth.routes');
 app.use('/auth', authRoutes);
 
 // Listen
-let server = http.createServer(app);
+let server;
+if (process.env.USE_HTTPS == 'true') {
+  server = https.createServer({
+    key: fs.readFileSync('seanpowell.dev.key'),
+    cert: fs.readFileSync('646f8397ee3910e5.crt'),
+    ca: [fs.readFileSync('ca-1.crt'), fs.readFileSync('ca-2.crt'), fs.readFileSync('ca-3.crt')]
+  }, app);
+} else {
+  server = http.createServer(app);
+}
 server.listen(port);
 server.on('listening', () => {
   console.log(chalk.black.bgGreen(`==> Listening on port ${port}...`))
-})
+});
