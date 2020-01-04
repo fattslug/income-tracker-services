@@ -120,7 +120,8 @@ function updateEntryByID(req, res) {
       PaymentType: updates.PaymentType,
       AmountPaid: updates.AmountPaid,
       ServicesRendered: updates.ServicesRendered,
-      DateAdded: updates.DateAdded
+      DateAdded: updates.DateAdded,
+      Tip: updates.Tip
     }, { new: true }).exec((err, newEntry) => {
       if (err) { throw(err); }
       res.status(200).send({

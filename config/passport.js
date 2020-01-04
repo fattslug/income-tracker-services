@@ -1,6 +1,6 @@
 const User = require('../src/schema/user.schema');
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GoogleStrategy = require('passport-google-oauth20');
 const BearerStrategy = require('passport-http-bearer');
 
 passport.serializeUser(function (user, done) {
