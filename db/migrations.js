@@ -11,23 +11,26 @@ async function updateEntries(req, res) {
   console.log(chalk.black.bgBlue('Updating Entries...'));
 
   try {
-    return Entry.updateMany({
-      $or: [
-        { "AmountPaid": { $gt: 0 } },
-        { "PaymentType": { $exists: true } }
-      ]
-    }, [{
-      $set: {
-        "PaymentMethods": [{
-          "AmountPaid": "$AmountPaid",
-          "PaymentType": "$PaymentType"
-        }]
-      }
-    }, {
-      $unset: ["AmountPaid", "PaymentType", "Tip"]
-    }]).exec((err, val) => {
-      console.log('Error 1:', err);
-      console.log('Result:', val);
+    return new Promise((resolve, reject) => {
+      Entry.updateMany({
+        $or: [
+          { "AmountPaid": { $gt: 0 } },
+          { "PaymentType": { $exists: true } }
+        ]
+      }, [{
+        $set: {
+          "PaymentMethods": [{
+            "AmountPaid": "$AmountPaid",
+            "PaymentType": "$PaymentType"
+          }]
+        }
+      }, {
+        $unset: ["AmountPaid", "PaymentType", "Tip"]
+      }]).exec((err, val) => {
+        console.log('Error 1:', err);
+        console.log('Result:', val);
+        resolve(true);
+      });
     });
   } catch (e) {
     console.log('Error 2: ', e);
