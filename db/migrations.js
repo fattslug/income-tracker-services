@@ -12,9 +12,9 @@ async function updateEntries(req, res) {
 
   try {
     return Entry.updateMany({
-      "$or": [
-        { "AmountPaid": { "$gt": 0 } },
-        { "PaymentType": { "$exists": true } }
+      $or: [
+        { "AmountPaid": { $gt: 0 } },
+        { "PaymentType": { $exists: true } }
       ]
     }, [{
       $set: {
