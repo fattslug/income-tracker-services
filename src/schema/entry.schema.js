@@ -4,12 +4,16 @@ const mongoose = require('mongoose');
 
 let entrySchema = new mongoose.Schema({
   ClientName: String,
-  PaymentType: String,
-  AmountPaid: Number,
-  Tip: Number,
   ServicesRendered: Array,
   DateAdded: Date,
-  Deleted: Boolean
+  Deleted: Boolean,
+  PaymentMethods: [{
+    PaymentType: String,
+    AmountPaid: Number
+  }],
+
+  PaymentType: String, // Legacy
+  AmountPaid: Number, // Legacy
 }, {
   collection: 'entries'
 });

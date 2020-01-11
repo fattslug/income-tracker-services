@@ -52,7 +52,15 @@ function getAllEntries(req, res) {
         success: true,
         body: {
           totalAmount: entries.reduce((acc, curr) => {
-            return acc + curr.AmountPaid;
+            if (curr.AmountPaid) {
+              return acc + curr.AmountPaid;
+            } else {
+              let totalPaid = 0;
+              curr.PaymentMethods.forEach((paymentMethod) => {
+                totalPaid += paymentMethod.AmountPaid;
+              });
+              return acc + totalPaid;
+            }
           }, 0),
           entries: entries.sort((a, b) => {
             return new Date(b.DateAdded) - new Date(a.DateAdded);
@@ -117,11 +125,9 @@ function updateEntryByID(req, res) {
   try {
     Entry.findByIdAndUpdate(entryID, {
       ClientName: updates.ClientName,
-      PaymentType: updates.PaymentType,
-      AmountPaid: updates.AmountPaid,
       ServicesRendered: updates.ServicesRendered,
       DateAdded: updates.DateAdded,
-      Tip: updates.Tip
+      PaymentMethods: updates.PaymentMethods
     }, { new: true }).exec((err, newEntry) => {
       if (err) { throw(err); }
       res.status(200).send({
