@@ -13,7 +13,10 @@ async function updateEntries(req, res) {
   try {
     return new Promise((resolve, reject) => {
       Entry.updateMany({
-        AmountPaid: { $gt: 0 }
+        $or: [
+          { "AmountPaid": { $gt: 0 } },
+          { "PaymentType": { $exists: true } }
+        ]
       }, [{
         $set: {
           "PaymentMethods": [{
