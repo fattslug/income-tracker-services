@@ -14,7 +14,7 @@ async function updateEntries(req, res) {
     return new Promise((resolve, reject) => {
       Entry.updateMany({
         $or: [
-          { "AmountPaid": { $gt: 0 } },
+          { AmountPaid: { $gt: 0 } },
           { "PaymentType": { $exists: true } }
         ]
       }, [{
