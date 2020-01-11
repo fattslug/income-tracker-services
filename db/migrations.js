@@ -15,15 +15,16 @@ async function updateEntries(req, res) {
         { AmountPaid: { $gt: 0 } },
         { PaymentType: { $exists: true } }
       ]
-    }, {
+    }, [{
       $set: {
         "PaymentMethods": [{
           "AmountPaid": "$AmountPaid",
           "PaymentType": "$PaymentType"
         }]
-      },
+      }
+    }, {
       $unset: ["AmountPaid", "PaymentType", "Tip"]
-    }).exec();
+    }]).exec();
   } catch (e) {
     console.log('Error: ', e);
   }
