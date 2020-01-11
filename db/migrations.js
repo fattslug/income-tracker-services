@@ -30,7 +30,7 @@ async function updateEntries(req, res) {
   }
 }
 
-console.log(process.env.MONGO_URL);
+console.log('Mongo URL:', process.env.MONGO_URL);
 
 mongoose.connect(process.env.MONGO_URL, async (err) => {
   if (err) {
