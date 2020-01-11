@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const chalk = require('chalk');
 
-require('dotenv').config();
+require('dotenv').config({ path: path.join(__dirname, 'production.env') });
 
 const Entry = require('../src/schema/entry.schema');
 
