@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const chalk = require('chalk');
+const path = require('path');
 
 require('dotenv').config({ path: path.join(__dirname, 'production.env') });
 
