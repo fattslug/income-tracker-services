@@ -17,14 +17,14 @@ async function updateEntries(req, res) {
         { "PaymentType": { "$exists": true } }
       ]
     }, [{
-      "$set": {
+      $set: {
         "PaymentMethods": [{
           "AmountPaid": "$AmountPaid",
           "PaymentType": "$PaymentType"
         }]
       }
     }, {
-      "$unset": ["AmountPaid", "PaymentType", "Tip"]
+      $unset: ["AmountPaid", "PaymentType", "Tip"]
     }]).exec();
   } catch (e) {
     console.log('Error: ', e);
