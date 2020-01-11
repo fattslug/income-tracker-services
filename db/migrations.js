@@ -25,9 +25,12 @@ async function updateEntries(req, res) {
       }
     }, {
       $unset: ["AmountPaid", "PaymentType", "Tip"]
-    }]).exec();
+    }]).exec((err, val) => {
+      console.log('Error 1:', err);
+      console.log('Result:', val);
+    });
   } catch (e) {
-    console.log('Error: ', e);
+    console.log('Error 2: ', e);
   }
 }
 
