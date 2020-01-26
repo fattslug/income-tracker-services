@@ -1,8 +1,16 @@
 const Entry = require('../schema/entry.schema');
 const chalk = require('chalk');
+const moment = require('moment');
+
+const paymentMethodsMap = [{
+  0: 'Cash',
+  1: 'Credit',
+  2: 'Venmo',
+  3: 'Apple Pay'
+}];
 
 exports.addEntry = addEntry;
-exports.getAllEntries = getAllEntries;
+exports.getEntries = getEntries;
 exports.getEntryByID = getEntryByID;
 exports.updateEntryByID = updateEntryByID;
 exports.deleteEntryByID = deleteEntryByID;
@@ -41,12 +49,35 @@ function addEntry(req, res) {
  * @param {object} res Response object
  * @returns {object} HTTP response
  */
-function getAllEntries(req, res) {
+function getEntries(req, res) {
   console.log('GET', chalk.blue('/entries/'));
-  console.log(chalk.black.bgBlue('Getting All Entries...'));
+  console.log(chalk.black.bgBlue('Getting Entries...'));
+
+  const { f, t, pm } = req.query;
+  const query = {
+    Deleted: {
+      $ne: true
+    }
+  };
+
+  query.DateAdded = {
+    $lte: new Date(moment(parseInt(t) || new Date()).format()),
+    $gte: new Date(f ? moment(parseInt(f)).format() : moment().subtract(20, 'days').format())
+  }
+
+  if (pm) {
+    query.PaymentMethods.$elemMatch.$or = [];
+    pm.split(',').forEach((method, i) => {
+      query.PaymentMethods.$elemMatch.$or.push({ PaymentType: paymentMethodsMap[method] });
+    });
+  }
+
+  console.log(query);
 
   try {
-    Entry.find({ Deleted: { $ne: true } }).exec((err, entries) => {
+    Entry.aggregate([
+      { $match: query }
+    ]).exec((err, entries) => {
       if (err) { throw(err); }
       res.status(200).send({
         success: true,
@@ -86,7 +117,7 @@ function getAllEntries(req, res) {
 function getEntryByID(req, res) {
   const entryID = req.params.entryID;
   console.log('GET', chalk.blue('/entries/'), entryID);
-  console.log(chalk.black.bgBlue('Getting All Entries...'));
+  console.log(chalk.black.bgBlue(`Getting Entry ID: ${entryId}...`));
 
   try {
     Entry.findById(entryID).exec((err, entry) => {
