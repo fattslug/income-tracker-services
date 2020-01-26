@@ -61,8 +61,8 @@ function getEntries(req, res) {
   };
 
   query.DateAdded = {
-    $lte: new Date(moment(parseInt(t) || new Date()).format()),
-    $gte: new Date(f ? moment(parseInt(f)).format() : moment().subtract(20, 'days').format())
+    $lte: new Date(moment(parseInt(t) || new Date()).endOf('day').format()),
+    $gte: new Date(f ? moment(parseInt(f)).startOf('day').format() : moment().subtract(20, 'days').startOf('day').format())
   }
 
   if (pm) {
