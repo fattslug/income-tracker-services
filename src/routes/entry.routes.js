@@ -17,7 +17,7 @@ router.post(
 router.get(
   '/',
   passport.authenticate('bearer', { session: true }),
-  ENTRY.getAllEntries
+  ENTRY.getEntries
 );
 // GET ENTRY BY ID
 router.get(
