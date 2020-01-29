@@ -117,7 +117,7 @@ function getEntries(req, res) {
 function getEntryByID(req, res) {
   const entryID = req.params.entryID;
   console.log('GET', chalk.blue('/entries/'), entryID);
-  console.log(chalk.black.bgBlue(`Getting Entry ID: ${entryId}...`));
+  console.log(chalk.black.bgBlue(`Getting Entry ID: ${entryID}...`));
 
   try {
     Entry.findById(entryID).exec((err, entry) => {
