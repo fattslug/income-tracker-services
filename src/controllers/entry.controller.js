@@ -2,12 +2,12 @@ const Entry = require('../schema/entry.schema');
 const chalk = require('chalk');
 const moment = require('moment');
 
-const paymentMethodsMap = [{
-  0: 'Cash',
-  1: 'Credit',
-  2: 'Venmo',
-  3: 'Apple Pay'
-}];
+const paymentMethodsMap = [
+  'Cash',
+  'Credit',
+  'Venmo',
+  'Apple Pay'
+];
 
 exports.addEntry = addEntry;
 exports.getEntries = getEntries;
@@ -66,9 +66,13 @@ function getEntries(req, res) {
   }
 
   if (pm) {
-    query.PaymentMethods.$elemMatch.$or = [];
-    pm.split(',').forEach((method, i) => {
-      query.PaymentMethods.$elemMatch.$or.push({ PaymentType: paymentMethodsMap[method] });
+    query.PaymentMethods = {
+      $elemMatch: {
+        $or: []
+      }
+    };
+    pm.split(',').forEach((typeIndex, i) => {
+      query.PaymentMethods.$elemMatch.$or.push({ PaymentType: paymentMethodsMap[typeIndex] });
     });
   }
 
