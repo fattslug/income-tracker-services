@@ -81,8 +81,9 @@ function getEntries(req, res) {
   try {
     Entry.aggregate([
       { $match: query }
-    ]).exec((err, entries) => {
+    ]).exec(async (err, entries) => {
       if (err) { throw(err); }
+      await Entry.populate(entries, {path: "PaymentMethods.Type"});
       res.status(200).send({
         success: true,
         body: {

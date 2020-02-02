@@ -8,8 +8,9 @@ let entrySchema = new mongoose.Schema({
   DateAdded: Date,
   Deleted: Boolean,
   PaymentMethods: [{
-    PaymentType: String,
-    AmountPaid: Number
+    PaymentType: String, // Legacy
+    AmountPaid: Number,
+    Type: {type: mongoose.Schema.Types.ObjectId, ref: 'PaymentType'}
   }],
 
   PaymentType: String, // Legacy
