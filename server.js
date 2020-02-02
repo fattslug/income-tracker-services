@@ -66,6 +66,9 @@ app.use(session({
 const entryRoutes = require('./src/routes/entry.routes');
 app.use('/entries', entryRoutes);
 
+const paymentTypeRoutes = require('./src/routes/payment-type.routes');
+app.use('/payment_types', paymentTypeRoutes);
+
 const authRoutes = require('./src/routes/auth.routes');
 app.use('/auth', authRoutes);
 
