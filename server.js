@@ -77,7 +77,7 @@ let server;
 if (process.env.USE_HTTPS == 'true') {
   server = https.createServer({
     key: fs.readFileSync('seanpowell.dev.key'),
-    cert: fs.readFileSync('646f8397ee3910e5.crt'),
+    cert: fs.readFileSync(`${process.env.CERT_HASH}.crt`),
     ca: [fs.readFileSync('ca-1.crt'), fs.readFileSync('ca-2.crt'), fs.readFileSync('ca-3.crt')]
   }, app);
 } else {
