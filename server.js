@@ -75,10 +75,11 @@ app.use('/auth', authRoutes);
 // Listen
 let server;
 if (process.env.USE_HTTPS == 'true') {
+  const CERT_PATH = "../certs/seanpowell-dev";
   server = https.createServer({
-    key: fs.readFileSync('seanpowell.dev.key'),
-    cert: fs.readFileSync(`${process.env.CERT_HASH}.crt`),
-    ca: [fs.readFileSync('ca-1.crt'), fs.readFileSync('ca-2.crt'), fs.readFileSync('ca-3.crt')]
+    key: fs.readFileSync(`${CERT_PATH}/seanpowell.dev.key`),
+    cert: fs.readFileSync(`${CERT_PATH}/${process.env.CERT_HASH}.crt`),
+    ca: [fs.readFileSync(`${CERT_PATH}/ca-1.crt`), fs.readFileSync(`${CERT_PATH}/ca-2.crt`), fs.readFileSync(`${CERT_PATH}/ca-3.crt`)]
   }, app);
 } else {
   server = http.createServer(app);
