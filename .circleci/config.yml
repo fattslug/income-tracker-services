@@ -53,8 +53,8 @@ jobs:
 
       - run:
           name: Upload Build
-          command: scp -o "StrictHostKeyChecking no" /home/circleci/repo/dist/bundle.js root@seanpowell.dev:/var/www/api/income-tracker.js
+          command: scp -o "StrictHostKeyChecking no" /home/circleci/repo/dist/bundle.js circleci@seanpowell.dev:/var/www/api/income-tracker.js
 
       - run:
           name: Starting Server
-          command: ssh -o "StrictHostKeyChecking no" root@seanpowell.dev "cd /var/www/api; pm2 delete income-tracker; pm2 start income-tracker.js"
+          command: ssh -o "StrictHostKeyChecking no" circleci@seanpowell.dev "cd /var/www/api; pm2 delete income-tracker; pm2 start income-tracker.js"
