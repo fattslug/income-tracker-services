@@ -34,7 +34,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: 
+      - run:
           name: Installing Dependencies
           command: npm install
 
@@ -43,18 +43,18 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: 
+      - run:
           name: Generating .env
           command: chmod +x build/create_env_vars.sh; ./build/create_env_vars.sh; cd build; ls -al
 
-      - run: 
+      - run:
           name: Building
           command: npm run build
 
       - run:
           name: Upload Build
-          command: scp -o "StrictHostKeyChecking no" /home/circleci/repo/dist/bundle.js circleci@seanpowell.dev:/var/www/api/income-tracker.js
+          command: scp -o "StrictHostKeyChecking no" /home/circleci/repo/dist/bundle.js circleci@jesscadoeshair.com:/var/www/api/income-tracker.js
 
       - run:
           name: Starting Server
-          command: ssh -o "StrictHostKeyChecking no" circleci@seanpowell.dev "cd /var/www/api; pm2 delete income-tracker; pm2 start income-tracker.js"
+          command: ssh -o "StrictHostKeyChecking no" circleci@jesscadoeshair.com "cd /var/www/api; pm2 delete income-tracker; pm2 start income-tracker.js"
