@@ -20,6 +20,7 @@ app.use(passport.initialize());
 // CORS Setup
 if (process.env.USE_CORS === "true") {
   const allowedOrigins = process.env.ALLOWED_ORIGINS;
+  console.log("allowed origins:", allowedOrigins);
   const corsOptions = {
     origin: "",
     optionsSuccessStatus: 200,
