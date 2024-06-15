@@ -12,7 +12,7 @@ const MongoStore = require("connect-mongo")(session);
 const chalk = require("chalk");
 const fs = require("fs");
 
-const db = require("./src/db");
+const db = require("../src/db");
 const app = express();
 
 app.use(passport.initialize());
@@ -73,31 +73,13 @@ app.use(
 );
 
 // Routes
-const entryRoutes = require("./src/routes/entry.routes");
+const entryRoutes = require("../src/routes/entry.routes");
 app.use("/entries", entryRoutes);
 
-const paymentTypeRoutes = require("./src/routes/payment-type.routes");
+const paymentTypeRoutes = require("../src/routes/payment-type.routes");
 app.use("/payment_types", paymentTypeRoutes);
 
-const authRoutes = require("./src/routes/auth.routes");
+const authRoutes = require("../src/routes/auth.routes");
 app.use("/auth", authRoutes);
 
-// Listen
-let server;
-if (process.env.USE_HTTPS == "true") {
-  const CERT_PATH = "/etc/letsencrypt/live/jessicadoeshair.com";
-  server = https.createServer(
-    {
-      key: fs.readFileSync(`${CERT_PATH}/privkey.pem`),
-      cert: fs.readFileSync(`${CERT_PATH}/cert.pem`),
-      ca: fs.readFileSync(`${CERT_PATH}/chain.pem`),
-    },
-    app
-  );
-} else {
-  server = http.createServer(app);
-}
-server.listen(port);
-server.on("listening", () => {
-  console.log(chalk.black.bgGreen(`==> Listening on port ${port}...`));
-});
+module.exports = app;
