@@ -82,4 +82,7 @@ app.use("/payment_types", paymentTypeRoutes);
 const authRoutes = require("../src/routes/auth.routes");
 app.use("/auth", authRoutes);
 
+const quoteRoutes = require("../src/routes/quote.routes");
+app.use("/quotes", quoteRoutes);
+
 module.exports = app;
